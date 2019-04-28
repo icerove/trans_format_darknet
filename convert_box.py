@@ -3,10 +3,6 @@ import shutil
 import numpy as np
 import cv2
 
-sets=[]
-
-classes = ["gun"]
-
 file_name = []
 for root, dirs, files in os.walk("gun_data"):  
   for filename in files:
@@ -30,6 +26,7 @@ for fn in file_name:
   if ".jpg" in fn:
     image_name.append(fn[:-4])
 
+os.makedirs('labels')
 for fn in image_name:
   oriimg = cv2.imread('gun_data/'+fn+'.jpg',cv2.IMREAD_UNCHANGED)
   size = oriimg.shape[1], oriimg.shape[0]
