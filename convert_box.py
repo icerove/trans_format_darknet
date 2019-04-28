@@ -56,7 +56,7 @@ def create_cross_validation_image_sets(image_name, train_indices, test_indices, 
 
   with open('test_'+str(k)+'.txt', 'w') as f:
     for i in test_indices:
-      f.write(os.getcwd()+"/gun_data"+image_name[i]+".jpg\n")
+      f.write(os.getcwd()+"/gun_data/"+image_name[i]+".jpg\n")
 
 from sklearn.model_selection import KFold
 k_fold = KFold(n_splits=5)
