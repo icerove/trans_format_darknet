@@ -43,6 +43,7 @@ for fn in image_name:
         box = (xmin, xmax, ymin, ymax)
         bb = convert(size, b)
         output += str(0) + " " + " ".join([str(a) for a in bb]) + '\n'
+      output = str(output)
   with open('labels/'+fn+'.txt','w') as output:
     f.write(output)
 
