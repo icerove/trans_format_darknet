@@ -40,11 +40,12 @@ for fn in image_name:
       n = int(f.readline())
     except Exception:
       pass
-    for _ in range(n):
-      xmin, ymin, xmax, ymax = np.fromfile(f, dtype=int, count=4, sep=" ")
-      box = (xmin, xmax, ymin, ymax)
-      bb = convert(size, b)
-      output += str(0) + " " + " ".join([str(a) for a in bb]) + '\n'
+    else:
+      for _ in range(n):
+        xmin, ymin, xmax, ymax = np.fromfile(f, dtype=int, count=4, sep=" ")
+        box = (xmin, xmax, ymin, ymax)
+        bb = convert(size, b)
+        output += str(0) + " " + " ".join([str(a) for a in bb]) + '\n'
   with open('labels/'+fn+'.txt','w') as output:
     f.write(output)
 
