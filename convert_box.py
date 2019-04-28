@@ -1,8 +1,4 @@
-import xml.etree.ElementTree as ET
-import pickle
 import os
-from os import listdir, getcwd
-from os.path import join
 import shutil
 import numpy as np
 import cv2
@@ -49,39 +45,24 @@ for fn in image_name:
       box = (xmin, xmax, ymin, ymax)
       bb = convert(size, b)
       output += str(0) + " " + " ".join([str(a) for a in bb]) + '\n'
-  with open('gun_data/'+fn+'.trans.txt','w') as output:
+  with open('labels/'+fn+'.txt','w') as output:
     f.write(output)
 
 import random
 random.shuffle(image_name)
 
-def copy_image_and_annot_dir(image_name, train_indices, test_indices, k):
-  train_img = 'gun_data_cross_validation/'+str(k)+"/"+"train_img/"
-  train_annot = 'gun_data_cross_validation/'+str(k)+"/"+"train_annot/"
-  test_img = 'gun_data_cross_validation/'+str(k)+"/"+"test_img/"
-  test_annot = 'gun_data_cross_validation/'+str(k)+"/"+"test_annot/"
+def create_cross_validation_image_sets(image_name, train_indices, test_indices, k):
+  with open('train_'+str(k)+'.txt') as f:
+    for i in train_indices:
+      f.write(os.getcwd()+"/gun_data/"+image_name[i]+".jpg")
 
-  os.makedirs(train_img)
-  os.makedirs(train_annot)
-  os.makedirs(test_img)
-  os.makedirs(test_annot)
-  
-  for i in train_indices:
-    shutil.copyfile('gun_data/'+image_name[i]+'.jpg',
-                    train_img+image_name[i]+'.jpg')
-    shutil.copyfile('gun_data/'+image_name[i]+'.trans.txt',
-                    train_annot+image_name[i]+'.trans.txt')
-  for i in test_indices:
-    shutil.copyfile('gun_data/'+image_name[i]+'.jpg',
-                    test_img+image_name[i]+'.jpg')
-    shutil.copyfile('gun_data/'+image_name[i]+'.trans.txt',
-                    test_annot+image_name[i]+'.trans.txt')
-
+  with open('test_'+str(k)+'.txt') as f:
+    for i in test_indices:
+      f.write(os.getcwd()+"/gun_data"+image_name[i]+".jpg")
 
 from sklearn.model_selection import KFold
 k_fold = KFold(n_splits=5)
 k = 1
 for train_indices, test_indices in k_fold.split(image_name):
-  copy_image_and_annot_dir(image_name, train_indices, test_indices, k)
+  create_cross_validation_image_sets(image_name, train_indices, test_indices, k)
   k += 1
-
