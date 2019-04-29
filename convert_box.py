@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 file_name = []
-for root, dirs, files in os.walk("gun_data"):  
+for root, dirs, files in os.walk("gun"):  
   for filename in files:
     file_name.append(filename)
 
@@ -26,13 +26,12 @@ for fn in file_name:
   if ".jpg" in fn:
     image_name.append(fn[:-4])
 
-os.makedirs('labels')
 for fn in image_name:
-  oriimg = cv2.imread('gun_data/'+fn+'.jpg',cv2.IMREAD_UNCHANGED)
+  oriimg = cv2.imread('gun/'+fn+'.jpg',cv2.IMREAD_UNCHANGED)
   size = oriimg.shape[1], oriimg.shape[0]
 
   output = ''
-  with open('gun_data/'+fn+'.txt','r') as f:
+  with open('gun/'+fn+'.txt','r') as f:
     try:
       n = int(f.readline())
     except Exception:
@@ -43,7 +42,7 @@ for fn in image_name:
         box = (xmin, xmax, ymin, ymax)
         bb = convert(size, box)
         output += str(0) + " " + " ".join([str(a) for a in bb]) + '\n'
-  with open('labels/'+fn+'.txt','w') as f:
+  with open('gun/'+fn+'.txt','w') as f:
     f.write(output)
 
 import random
@@ -52,11 +51,11 @@ random.shuffle(image_name)
 def create_cross_validation_image_sets(image_name, train_indices, test_indices, k):
   with open('train_'+str(k)+'.txt', 'w') as f:
     for i in train_indices:
-      f.write(os.getcwd()+"/gun_data/"+image_name[i]+".jpg\n")
+      f.write("gun/"+image_name[i]+".jpg\n")
 
   with open('test_'+str(k)+'.txt', 'w') as f:
     for i in test_indices:
-      f.write(os.getcwd()+"/gun_data/"+image_name[i]+".jpg\n")
+      f.write("gun/"+image_name[i]+".jpg\n")
 
 from sklearn.model_selection import KFold
 k_fold = KFold(n_splits=5)

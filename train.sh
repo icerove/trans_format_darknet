@@ -1,2 +1,2 @@
 #!/bin/bash
-../darknet/darknet detector train voc.data yolov3-voc.cfg ../darknet/darknet53.conv.74 -gpus 0
+../darknet/darknet detector train gun.data yolov3-gun.cfg ../darknet/darknet53.conv.74 -map | tee log.txt
